@@ -80,7 +80,13 @@ function App() {
 }
 
 // child component
-function MovieCard(props) {
+interface Props {
+  title: string;
+  posterSrc: string;
+  genres: string[];
+}
+
+function MovieCard(props: Props) {
   return (
     <div className="movie-card">
       <img src={props.posterSrc} alt={props.title} />
@@ -98,11 +104,11 @@ version?
 
 Since we know that a React function will only ever get called with one argument,
 and that argument will be the **props** object, we can take advantage of a
-modern JavaScript feature called [**destructuring**][destructuring] to make our
-component even cleaner:
+feature called [**destructuring**][destructuring] to make our component even 
+cleaner:
 
 ```jsx
-function MovieCard({ title, posterSrc, genres }) {
+function MovieCard({ title, posterSrc, genres }: Props) {
   return (
     <div className="movie-card">
       <img src={posterSrc} alt={title} />
@@ -120,39 +126,22 @@ with the same names**. That way, in our JSX, we don't have to use
 `props.whatever` everywhere — the value associated with each key is stored in
 the corresponding variable, so it can be accessed directly!
 
-Another benefit of destructuring props is that it makes it easier to tell what
-props a component expects to be passed down from its parent. Consider these two
-versions of the same component:
+There is one pitfall to keep in mind with destructuring. You may be tempted to 
+type each property within the destructured object, like so: 
 
-```jsx
-// Without Destructuring
-function MovieCard(props) {
-  return (
-    <div className="movie-card">
-      <img src={props.posterSrc} alt={props.title} />
-      <h2>{props.title}</h2>
-      <small>{props.genres.join(", ")}</small>
-    </div>
-  );
-}
-
-// With Destructuring
-function MovieCard({ title, posterSrc, genres }) {
-  return (
-    <div className="movie-card">
-      <img src={posterSrc} alt={title} />
-      <h2>{title}</h2>
-      <small>{genres.join(", ")}</small>
-    </div>
-  );
-}
+```ts
+{ title: string, posterSrc: string, genres: string[] }
 ```
 
-Looking at the version without destructuring, we'd have to find all the places
-where `props` is referenced in the component to determine what props this
-component expects. Looking at the version with destructuring, all we have to do
-is examine the function parameters and we can see exactly what props the
-component needs.
+This will _not_ work. The proper syntax for typing destructured objects, without
+an interface, is: 
+
+```ts 
+{ title, posterSrc, genres }: { title: string; posterSrc: string; genres: string[] }
+```
+
+As you can see already, this can get very long and unruly quick. Interfaces are
+still the preferred way, as shown in the above `MovieCard` example.
 
 ### Destructuring Nested Objects
 
@@ -187,7 +176,7 @@ Since `socialLinks` is an object, we can also destructure it to make our JSX
 cleaner, either by destructuring in the body of the function:
 
 ```jsx
-function SocialMedia({ socialLinks }) {
+function SocialMedia({ socialLinks }: Props) {
   const { github, linkedin } = socialLinks;
 
   return (
@@ -202,13 +191,24 @@ function SocialMedia({ socialLinks }) {
 ...or by destructuring further in the parameters to our function:
 
 ```jsx
-function SocialMedia({ socialLinks: { github, linkedin } }) {
+function SocialMedia({ socialLinks: { github, linkedin } }: Props) {
   return (
     <div>
       <a href={github}>{github}</a>
       <a href={linkedin}>{linkedin}</a>
     </div>
   );
+}
+```
+
+The interface would be the same either way: 
+
+```ts
+interface Props {
+  socialLinks: {
+    github: string;
+    linkedin: string;
+  }
 }
 ```
 
@@ -239,7 +239,7 @@ function MovieCard({
   title,
   genres,
   posterSrc = "https://m.media-amazon.com/images/M/MV5BOTJjNzczMTUtNzc5MC00ODk0LWEwYjgtNzdiOTEyZmQxNzhmXkEyXkFqcGdeQXVyNzMzMjU5NDY@._V1_UY268_CR1,0,182,268_AL_.jpg",
-}) {
+}: Props) {
   return (
     <div className="movie-card">
       <img src={posterSrc} alt={title} />
@@ -250,8 +250,19 @@ function MovieCard({
 }
 ```
 
+We also have to update our interface to alert TypeScript that `posterSrc` is 
+an optional prop, so it won't complain when it's missing:
+
+```ts
+interface Props {
+  title: string;
+  posterSrc?: string;
+  genres: string[];
+}
+```
+
 Now, whenever we omit the `posterSrc` prop, or if it's `undefined`, the
-`MovieCard` component will use this default value instead. That means we don't
+`MovieCard` component will use the default value instead. That means we don't
 have to worry about not passing in a poster all the time — the component will
 take care of this for us!
 

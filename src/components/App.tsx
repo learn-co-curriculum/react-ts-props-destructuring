@@ -1,4 +1,5 @@
 import MovieCard from "./MovieCard";
+import SocialMedia from "./SocialMedia";
 
 function App() {
   const title = "Mad Max";
@@ -6,9 +7,16 @@ function App() {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn1OTYGz2GDC1XjA9tirh_1Rd571yE5UFIYsmZp4nACMd7CCHM";
   const genresArr = ["Action", "Adventure", "Science Fiction", "Thriller"];
 
+  const socialLinks = {
+    github: "https://github.com",
+    linkedin: "https://linkedin.com"
+  }
+
   return (
     <div className="App">
-      <MovieCard title={title} posterSrc={posterURL} genres={genresArr} />
+      <MovieCard title={title} genres={genresArr} />
+      <h3>Socials</h3>
+      <SocialMedia socialLinks={socialLinks} />
     </div>
   );
 }

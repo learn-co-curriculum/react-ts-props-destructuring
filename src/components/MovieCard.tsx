@@ -1,6 +1,6 @@
 interface Props {
   title: string;
-  posterSrc: string;
+  posterSrc?: string;
   genres: string[];
 }
 
