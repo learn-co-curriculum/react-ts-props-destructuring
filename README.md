@@ -162,7 +162,7 @@ function App() {
   );
 }
 
-function SocialMedia({ socialLinks }) {
+function SocialMedia({ socialLinks }: Props) {
   return (
     <div>
       <a href={socialLinks.github}>{socialLinks.github}</a>
