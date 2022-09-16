@@ -9,12 +9,12 @@ function App() {
 
   const socialLinks = {
     github: "https://github.com",
-    linkedin: "https://linkedin.com"
-  }
+    linkedin: "https://linkedin.com",
+  };
 
   return (
     <div className="App">
-      <MovieCard title={title} genres={genresArr} />
+      <MovieCard title={title} genres={genresArr} posterSrc={posterURL} />
       <h3>Socials</h3>
       <SocialMedia socialLinks={socialLinks} />
     </div>

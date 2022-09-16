@@ -104,7 +104,7 @@ version?
 
 Since we know that a React function will only ever get called with one argument,
 and that argument will be the **props** object, we can take advantage of a
-feature called [**destructuring**][destructuring] to make our component even 
+feature called [**destructuring**][destructuring] to make our component even
 cleaner:
 
 ```jsx
@@ -126,22 +126,22 @@ with the same names**. That way, in our JSX, we don't have to use
 `props.whatever` everywhere — the value associated with each key is stored in
 the corresponding variable, so it can be accessed directly!
 
-There is one pitfall to keep in mind with destructuring. You may be tempted to 
-type each property within the destructured object, like so: 
+There is one pitfall to keep in mind with destructuring. You may be tempted to
+type each property within the destructured object, like so:
 
 ```ts
 { title: string, posterSrc: string, genres: string[] }
 ```
 
 This will _not_ work. The proper syntax for typing destructured objects, without
-an interface, is: 
+an interface, is:
 
-```ts 
+```ts
 { title, posterSrc, genres }: { title: string; posterSrc: string; genres: string[] }
 ```
 
-As you can see already, this can get very long and unruly quick. Interfaces are
-still the preferred way, as shown in the above `MovieCard` example.
+As you can see already, this can quickly get very long and unruly. Interfaces
+are still the preferred way, as shown in the above `MovieCard` example.
 
 ### Destructuring Nested Objects
 
@@ -201,14 +201,14 @@ function SocialMedia({ socialLinks: { github, linkedin } }: Props) {
 }
 ```
 
-The interface would be the same either way: 
+The interface would be the same either way:
 
 ```ts
 interface Props {
   socialLinks: {
     github: string;
     linkedin: string;
-  }
+  };
 }
 ```
 
@@ -250,8 +250,8 @@ function MovieCard({
 }
 ```
 
-We also have to update our interface to alert TypeScript that `posterSrc` is 
-an optional prop, so it won't complain when it's missing:
+We also have to update our interface to alert TypeScript that `posterSrc` is an
+optional prop, so it won't complain when it's missing:
 
 ```ts
 interface Props {
